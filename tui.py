@@ -7,3 +7,11 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
+
+def show_header():
+    # SECTION A, TASK 1
+    # to show welcome text to user
+    header_txt = 'Disneyland Review Analyser'
+    print('-' * len(header_txt))
+    print(header_txt)
+    print('-' * len(header_txt))

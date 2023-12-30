@@ -7,6 +7,9 @@ Note:   any user input/output should be done in the module 'tui'
         any processing should be done in the module 'process'
         any visualisation should be done in the module 'visual'
 """
+import process
+import tui
 
-
+tui.show_header()
+process.read_data()
 

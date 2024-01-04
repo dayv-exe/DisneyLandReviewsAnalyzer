@@ -21,4 +21,4 @@ def read_data():
             data_list.append(line)
             row_count += 1
 
-    print(f"Successfully read {row_count} lines from dataset!")
+    print(f"\nSuccessfully read {row_count} lines from dataset!\n")

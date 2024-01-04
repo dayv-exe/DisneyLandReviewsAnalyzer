@@ -12,4 +12,5 @@ import tui
 
 tui.show_header()
 process.read_data()
+tui.show_main_menu()
 

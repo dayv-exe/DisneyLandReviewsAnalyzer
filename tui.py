@@ -8,10 +8,27 @@ Please note that you do not need to read the data file or perform any other such
 """
 
 
-def show_header():
+def show_header(header_txt='Disneyland Review Analyser'):
     # SECTION A, TASK 1
     # to show welcome text to user
-    header_txt = 'Disneyland Review Analyser'
     print('-' * len(header_txt))
     print(header_txt)
     print('-' * len(header_txt))
+
+
+def show_main_menu():
+    # TASK 3
+    # to display main menu options
+    prompt = 'Please enter the letter which corresponds with your desired menu choice:'
+    menu_choices = [
+        ['A', 'View Data'],
+        ['B', 'Visualize Data'],
+        ['X', 'Exit']
+    ]
+    _show_menu_opts(prompt, menu_choices)
+
+
+def _show_menu_opts(prompt_txt, menu_choices):
+    print(prompt_txt)
+    for choice in menu_choices:
+        print(f'    [{choice[0]}] {choice[1]}')

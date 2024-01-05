@@ -13,4 +13,16 @@ import tui
 tui.show_header()
 process.read_data()
 
-tui.show_main_menu()
+
+# *** TASK 3 ***
+
+# show main menu options
+def show_main_menu():
+    user_sel = tui.show_menu(
+        prompt='Please enter the letter which corresponds with your desired menu choice:',
+        menu_choices=['View Data', 'Visualize Data'],
+        show_choice_confirmation=True,
+        show_exit_opt=True
+    )
+
+show_main_menu()

@@ -57,6 +57,24 @@ def show_main_menu():
     show_sub_menu(sel_opt)
 
 
+def show_menu(prompt, menu_choices, show_choice_confirmation=False, show_exit_opt=False):
+    # PRINTS MENU OPTIONS
+    # RETURNS USER CHOICE (if valid)
+    _print_menu_opts(prompt, menu_choices, show_exit_opt)
+    sel_opt = None
+
+    user_input = input('')
+    sel_opt = _get_sel_opt(user_input, menu_choices, show_exit_opt)
+
+    while sel_opt is None:
+        user_input = input('Please choose a valid option from menu!\n')
+        sel_opt = _get_sel_opt(user_input, menu_choices, show_exit_opt)
+
+    if show_choice_confirmation:
+        print(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}\n')
+
+    return {'alpha': sel_opt[0], 'choice': sel_opt[1]}  # returns users choice as the alphabet representing choice, then the choice text
+
 def show_sub_menu(sel_opt):
 
     # *** TASK 6 ***
@@ -76,6 +94,7 @@ def show_sub_menu(sel_opt):
 # these functions abstract away repetitive code to make project cleaner
 def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):
     # prints out prompt to select a menu option then prints out menu options
+    # 'show_exit_opt=True' will cause the '[X] Exit' choice to be added to menu being printed
     cur_index = 0
     print(prompt_txt)
     for choice in menu_choices:
@@ -91,6 +110,7 @@ def _get_sel_opt(user_input, menu_choices, allow_exit_opt=False):
     # gets selected option
     # returns the details of the option user selected if it matches any option provided (returns the alphabet and choice text)
     # returns None if option user selected is invalid
+    # 'allow_exit_opt=True' will allow for func to return 'X, Exit' for further processing in caller function
 
     cur_index = 0
     for c in menu_choices:

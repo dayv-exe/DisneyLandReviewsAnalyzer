@@ -36,20 +36,6 @@ def show_menu(title, menu_choices, show_choice_confirmation=False, show_exit_opt
 
     return sel_opt[0], sel_opt[1]  # returns users choice as the alphabet representing choice, then the choice text
 
-def show_sub_menu(sel_opt):
-
-    # *** TASK 6 ***
-
-    if sel_opt[0] == 'A':
-        # if menu option 'A' is selected
-        sub_menu_a = ['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
-        _print_menu_opts('\nPlease enter one of the following options:', sub_menu_a)
-
-    elif sel_opt[0] == 'B':
-        # if menu option 'B' is selected
-        sub_menu_b = ['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
-        _print_menu_opts('\nPlease enter one of the following options:', sub_menu_b)
-
 
 # region HELPER FUNCTIONS
 # these functions abstract away repetitive code to make project cleaner

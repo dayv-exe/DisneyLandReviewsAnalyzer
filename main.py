@@ -10,8 +10,11 @@ Note:   any user input/output should be done in the module 'tui'
 import process
 import tui
 
-tui.show_header()
-process.read_data()
+
+def run():
+    tui.show_header()
+    process.read_data()
+    show_main_menu()
 
 
 # *** TASK 3 ***
@@ -19,13 +22,20 @@ process.read_data()
 # show main menu options
 def show_main_menu():
     user_sel = tui.show_menu(
+
+        # *** TASK 3 ***
+
         # allow user to select choice
         title='Please enter the letter which corresponds with your desired menu choice:',
         menu_choices=['View Data', 'Visualize Data'],
         show_choice_confirmation=True,
         show_exit_opt=True
     )
+
     confirm_user_sel = tui.show_menu(
+
+        # *** TASK 5 ***
+
         # allows user to confirm choice
         title='Confirm selection:',
         menu_choices=['View Data', 'Visualize Data'],
@@ -58,6 +68,9 @@ def show_main_menu():
 
 
 def show_sub_menu(user_selection):
+
+    # *** TASK 6 ***
+
     user_sel = None
     if user_selection[0] == 'A':
         user_sel = tui.show_menu(
@@ -71,4 +84,4 @@ def show_sub_menu(user_selection):
         )
 
 
-show_main_menu()
+run()

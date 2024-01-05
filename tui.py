@@ -26,15 +26,18 @@ def show_main_menu():
     # TASK 4
     # to confirm user input
     user_choice = input('')
-    sel_opt = _get_sel_opt(user_choice, menu_choices)  # gets option user selected
+    sel_opt = _get_sel_opt(user_choice, menu_choices, True)  # gets option user selected
 
     while sel_opt is None:
         # if user entered an invalid input
         user_choice = input('Please choose a valid option from menu!\n')
-        sel_opt = _get_sel_opt(user_choice, menu_choices)
+        sel_opt = _get_sel_opt(user_choice, menu_choices, True)
 
     # if user input is valid
     print(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}')
+
+    if sel_opt[0] == 'X':
+        quit()
 
 
 # region HELPER FUNCTIONS
@@ -52,7 +55,7 @@ def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):
         print(f'    [X] Exit')
 
 
-def _get_sel_opt(user_input, menu_choices):
+def _get_sel_opt(user_input, menu_choices, use_exit_opt=False):
     # gets selected option
     # returns the details of the option user selected if it matches any option provided
     # returns an array of nones if opt is invalid
@@ -60,7 +63,10 @@ def _get_sel_opt(user_input, menu_choices):
     cur_index = 0
     for c in menu_choices:
         if user_input.lower() == chr(ord('a') + cur_index):
-            return [chr(ord('A') + cur_index), c]  # return the menu option after the corresponding alphabet user selected
+            return chr(ord('A') + cur_index), c  # return the menu option after the corresponding alphabet user selected
+        elif use_exit_opt and user_input.lower() == 'x':
+            # if the users has chosen to end the program
+            return 'X', 'Exit'
 
         cur_index += 1
 

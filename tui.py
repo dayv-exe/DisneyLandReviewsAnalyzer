@@ -18,10 +18,10 @@ def show_header(header_txt='Disneyland Review Analyser'):
     print('-' * len(header_txt))
 
 
-def show_menu(prompt, menu_choices, show_choice_confirmation=False, show_exit_opt=False):
+def show_menu(title, menu_choices, show_choice_confirmation=False, show_exit_opt=False):
     # PRINTS MENU OPTIONS
     # RETURNS USER CHOICE (if valid)
-    _print_menu_opts(prompt, menu_choices, show_exit_opt)
+    _print_menu_opts(title, menu_choices, show_exit_opt)
     sel_opt = None
 
     user_input = input('')

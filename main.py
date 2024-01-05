@@ -19,16 +19,18 @@ process.read_data()
 # show main menu options
 def show_main_menu():
     user_sel = tui.show_menu(
-        prompt='Please enter the letter which corresponds with your desired menu choice:',
+        # allow user to select choice
+        title='Please enter the letter which corresponds with your desired menu choice:',
         menu_choices=['View Data', 'Visualize Data'],
         show_choice_confirmation=True,
         show_exit_opt=True
     )
     confirm_user_sel = tui.show_menu(
-            prompt='Confirm selection:',
-            menu_choices=['View Data', 'Visualize Data'],
-            show_choice_confirmation=False,
-            show_exit_opt=True
+        # allows user to confirm choice
+        title='Confirm selection:',
+        menu_choices=['View Data', 'Visualize Data'],
+        show_choice_confirmation=False,
+        show_exit_opt=True
     )
 
     # region REMOVE BLOCK TO STOP SELECTION MATCHING RULE
@@ -36,10 +38,10 @@ def show_main_menu():
     # the two selections (initial sel, and confirmation sel) must match for the program to proceed according to task 5?
 
     while not user_sel[0] == confirm_user_sel[0]:
-        # to make sure both selections match
+        # to make sure both choices selected match
         user_sel = confirm_user_sel
         confirm_user_sel = tui.show_menu(
-            prompt=f'You have chosen option {user_sel[0]} - {user_sel[1]}\n\nConfirm selection:',
+            title=f'You have chosen option {user_sel[0]} - {user_sel[1]}\n\nConfirm selection:',
             menu_choices=['View Data', 'Visualize Data'],
             show_choice_confirmation=False,
             show_exit_opt=True
@@ -48,19 +50,25 @@ def show_main_menu():
     # endregion
 
     if confirm_user_sel[0] == 'X':
+        # if user chooses to exit program
         quit()
 
-
+    # if user chooses other options
     show_sub_menu(confirm_user_sel)
 
 
-def show_sub_menu(user_sel):
-    tui.show_menu(
-        prompt='Please enter the letter which corresponds with your desired menu choice:',
-        menu_choices=['View Data', 'Visualize Data'],
-        show_choice_confirmation=True,
-        show_exit_opt=True
-    )
+def show_sub_menu(user_selection):
+    user_sel = None
+    if user_selection[0] == 'A':
+        user_sel = tui.show_menu(
+            title='Please enter one of the following options:',
+            menu_choices=['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
+        )
+    elif user_selection[0] == 'B':
+        user_sel = tui.show_menu(
+            title='Please enter one of the following options:',
+            menu_choices=['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
+        )
 
 
 show_main_menu()

@@ -16,35 +16,19 @@ def show_header(header_txt='Disneyland Review Analyser'):
     print('-' * len(header_txt))
 
 
-def _get_sel_opt(user_input, menu_choices):
-    # gets selected option
-    # returns the details of the option user selected if it matches any option provided
-    # returns an array of nones if opt is invalid
-    for c in menu_choices:
-        if user_input.lower() == c[0].lower():
-            return c
-            break
-
-    return [None, None]
-
-
 def show_main_menu():
     # TASK 3
     # to display main menu options
     prompt = 'Please enter the letter which corresponds with your desired menu choice:'
-    menu_choices = [
-        ['A', 'View Data'],
-        ['B', 'Visualize Data'],
-        ['X', 'Exit']
-    ]
-    _show_menu_opts(prompt, menu_choices)
+    menu_choices = ['View Data', 'Visualize Data']
+    _print_menu_opts(prompt, menu_choices, True)
 
     # TASK 4
     # to confirm user input
     user_choice = input('')
     sel_opt = _get_sel_opt(user_choice, menu_choices)  # gets option user selected
 
-    while sel_opt[0] is None:
+    while sel_opt is None:
         # if user entered an invalid input
         user_choice = input('Please choose a valid option from menu!\n')
         sel_opt = _get_sel_opt(user_choice, menu_choices)
@@ -53,7 +37,28 @@ def show_main_menu():
     print(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}')
 
 
-def _show_menu_opts(prompt_txt, menu_choices):
+# region HELPER FUNCTIONS
+# these functions abstract away repetitive code to make project cleaner
+def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):
+    # prints out prompt to select a menu option then prints out menu options
+    cur_index = 0
     print(prompt_txt)
     for choice in menu_choices:
-        print(f'    [{choice[0]}] {choice[1]}')
+        print(f'    [{chr(ord("A") + cur_index)}] {choice}')
+        cur_index += 1
+
+    if show_exit_opt:
+        # to give user menu option to exit
+        print(f'    [X] Exit')
+
+
+def _get_sel_opt(user_input, menu_choices):
+    # gets selected option
+    # returns the details of the option user selected if it matches any option provided
+    # returns an array of nones if opt is invalid
+    for c in menu_choices:
+        if user_input.lower() == c[0].lower():
+            return c
+
+    return None
+# endregion

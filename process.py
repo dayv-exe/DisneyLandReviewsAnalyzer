@@ -9,7 +9,8 @@ import csv
 
 
 def read_data():
-    # SECTION A, TASK 2
+    # *** TASK 2 ***
+
     # to read data from dataset
     file_path = './data/disneyland_reviews.csv'
     data_list = []

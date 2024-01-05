@@ -18,45 +18,6 @@ def show_header(header_txt='Disneyland Review Analyser'):
     print('-' * len(header_txt))
 
 
-def show_main_menu():
-
-    # *** TASK 3 ***
-
-    # sets main menu values
-    prompt = 'Please enter the letter which corresponds with your desired menu choice:'
-    main_menu_choices = ['View Data', 'Visualize Data']
-    sel_opt = None
-
-    for i in range(2):  # shows main menu options twice as implied by task 5?
-
-        # *** TASK 4, 5 ***
-
-        # to display main menu options
-        _print_menu_opts(prompt if i == 0 else 'Confirm selection:', main_menu_choices, True)  # show default 'prompt on first run, and 'confirm selection' on second run
-
-        # to confirm user input
-        user_choice = input('')
-        sel_opt = _get_sel_opt(user_choice, main_menu_choices, True)  # gets option user selected
-
-        while sel_opt is None:
-            # if user entered an invalid input
-            user_choice = input('Please choose a valid option from menu!\n')
-            sel_opt = _get_sel_opt(user_choice, main_menu_choices, True)
-
-        # to print the option user selected only after the menu has been shown once
-        if i == 0:
-            print(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}\n')
-
-        # then it loops back to the start to allow user to confirm choice
-
-    if sel_opt[0] == 'X':
-        # ends program if exit opt is selected
-        quit()
-
-    # show selected sub menu
-    show_sub_menu(sel_opt)
-
-
 def show_menu(prompt, menu_choices, show_choice_confirmation=False, show_exit_opt=False):
     # PRINTS MENU OPTIONS
     # RETURNS USER CHOICE (if valid)
@@ -73,7 +34,7 @@ def show_menu(prompt, menu_choices, show_choice_confirmation=False, show_exit_op
     if show_choice_confirmation:
         print(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}\n')
 
-    return {'alpha': sel_opt[0], 'choice': sel_opt[1]}  # returns users choice as the alphabet representing choice, then the choice text
+    return sel_opt[0], sel_opt[1]  # returns users choice as the alphabet representing choice, then the choice text
 
 def show_sub_menu(sel_opt):
 

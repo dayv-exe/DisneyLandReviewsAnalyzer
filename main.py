@@ -13,5 +13,4 @@ import tui
 tui.show_header()
 process.read_data()
 
-while True:
-    tui.show_main_menu()
+tui.show_main_menu()

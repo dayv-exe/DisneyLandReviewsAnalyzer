@@ -53,6 +53,24 @@ def show_main_menu():
         # ends program if exit opt is selected
         quit()
 
+    # show selected sub menu
+    show_sub_menu(sel_opt)
+
+
+def show_sub_menu(sel_opt):
+
+    # *** TASK 6 ***
+
+    if sel_opt[0] == 'A':
+        # if menu option 'A' is selected
+        sub_menu_a = ['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
+        _print_menu_opts('\nPlease enter one of the following options:', sub_menu_a)
+
+    elif sel_opt[0] == 'B':
+        # if menu option 'B' is selected
+        sub_menu_b = ['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
+        _print_menu_opts('\nPlease enter one of the following options:', sub_menu_b)
+
 
 # region HELPER FUNCTIONS
 # these functions abstract away repetitive code to make project cleaner
@@ -71,8 +89,8 @@ def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):
 
 def _get_sel_opt(user_input, menu_choices, allow_exit_opt=False):
     # gets selected option
-    # returns the details of the option user selected if it matches any option provided
-    # returns an array of nones if opt is invalid
+    # returns the details of the option user selected if it matches any option provided (returns the alphabet and choice text)
+    # returns None if option user selected is invalid
 
     cur_index = 0
     for c in menu_choices:

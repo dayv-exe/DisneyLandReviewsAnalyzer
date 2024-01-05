@@ -56,9 +56,13 @@ def _get_sel_opt(user_input, menu_choices):
     # gets selected option
     # returns the details of the option user selected if it matches any option provided
     # returns an array of nones if opt is invalid
+
+    cur_index = 0
     for c in menu_choices:
-        if user_input.lower() == c[0].lower():
-            return c
+        if user_input.lower() == chr(ord('a') + cur_index):
+            return [chr(ord('A') + cur_index), c]  # return the menu option after the corresponding alphabet user selected
+
+        cur_index += 1
 
     return None
 # endregion

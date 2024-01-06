@@ -12,8 +12,11 @@ import tui
 
 
 def run():
-    tui.show_header()
-    process.read_data()
+    tui.show_header(
+        header_txt='Disneyland Review Analyser',
+        header_pattern_char='-'
+    )
+    process.read_dataset(file_path='./data/disneyland_reviews.csv')
     show_main_menu()
 
 
@@ -77,11 +80,19 @@ def show_sub_menu(user_selection):
             title='Please enter one of the following options:',
             menu_choices=['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
         )
+
     elif user_selection[0] == 'B':
         user_sel = tui.show_menu(
             title='Please enter one of the following options:',
             menu_choices=['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
         )
+
+
+def view_reviews_by_park():
+
+    # *** TASK 7 ***
+
+    park_name = tui.ask_user('Please enter the park name: \n')
 
 
 run()

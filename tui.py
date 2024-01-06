@@ -8,33 +8,40 @@ Please note that you do not need to read the data file or perform any other such
 """
 
 
-def show_header(header_txt='Disneyland Review Analyser'):
+def show_header(header_txt, header_pattern_char):
 
     # *** SECTION A, TASK 1 ***
 
     # to show welcome text to user
-    print('-' * len(header_txt))
-    print(header_txt)
-    print('-' * len(header_txt))
+    tell_user(header_pattern_char * len(header_txt))
+    tell_user(header_txt)
+    tell_user(header_pattern_char * len(header_txt))
 
 
 def show_menu(title, menu_choices, show_choice_confirmation=False, show_exit_opt=False):
     # PRINTS MENU OPTIONS
     # RETURNS USER CHOICE (if valid)
     _print_menu_opts(title, menu_choices, show_exit_opt)
-    sel_opt = None
 
-    user_input = input('')
+    user_input = ask_user('')
     sel_opt = _get_sel_opt(user_input, menu_choices, show_exit_opt)
 
     while sel_opt is None:
-        user_input = input('Please choose a valid option from menu!\n')
+        user_input = ask_user('Please choose a valid option from menu!\n')
         sel_opt = _get_sel_opt(user_input, menu_choices, show_exit_opt)
 
     if show_choice_confirmation:
-        print(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}\n')
+        tell_user(f'You have chosen option {sel_opt[0]} - {sel_opt[1]}\n')
 
     return sel_opt[0], sel_opt[1]  # returns users choice as the alphabet representing choice, then the choice text
+
+
+def tell_user(text):
+    print(text)
+
+
+def ask_user(text):
+    return input(text)
 
 
 # region HELPER FUNCTIONS
@@ -43,14 +50,14 @@ def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):
     # prints out prompt to select a menu option then prints out menu options
     # 'show_exit_opt=True' will cause the '[X] Exit' choice to be added to menu being printed
     cur_index = 0
-    print(prompt_txt)
+    tell_user(prompt_txt)
     for choice in menu_choices:
-        print(f'    [{chr(ord("A") + cur_index)}] {choice}')
+        tell_user(f'    [{chr(ord("A") + cur_index)}] {choice}')
         cur_index += 1
 
     if show_exit_opt:
         # to give user menu option to exit
-        print(f'    [X] Exit')
+        tell_user(f'    [X] Exit')
 
 
 def _get_sel_opt(user_input, menu_choices, allow_exit_opt=False):

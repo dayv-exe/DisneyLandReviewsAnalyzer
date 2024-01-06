@@ -7,12 +7,16 @@ It is likely that most sections will require functions to be placed in this modu
 
 import csv
 
+import tui
 
-def read_data():
+
+LIST_OF_BRANCHES = []
+
+
+def read_dataset(file_path):
     # *** TASK 2 ***
 
     # to read data from dataset
-    file_path = './data/disneyland_reviews.csv'
     data_list = []
     row_count = 0
     with open(file_path) as file:
@@ -20,6 +24,23 @@ def read_data():
         next(csv_reader)  # to skip over header
         for line in csv_reader:
             data_list.append(line)
+            add_branch(get_rows_frm(line)['branch'])
             row_count += 1
 
-    print(f"\nSuccessfully read {row_count} lines from dataset!\n")
+    tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
+
+
+# region HELPER FUNCTIONS
+
+def get_rows_frm(csv_line):
+    # returns {review_id, rating, year_month, review_location, branch} of csv line parsed in
+    return {'review_id': csv_line[0], 'rating': csv_line[1], 'year_month': csv_line[2], 'review_location': csv_line[3], 'branch': csv_line[4]}
+
+
+def add_branch(branch):
+    # to add a branch to the list of branches if it hasn't already
+    branch = branch.removeprefix('Disneyland_')
+    if branch not in LIST_OF_BRANCHES:
+        LIST_OF_BRANCHES.append(branch)
+
+# endregion

@@ -20,9 +20,6 @@ def run():
     show_main_menu()
 
 
-# *** TASK 3 ***
-
-# show main menu options
 def show_main_menu():
     user_sel = tui.show_menu(
 
@@ -76,20 +73,46 @@ def show_sub_menu(user_selection):
 
     user_sel = None
     if user_selection[0] == 'A':
-        user_sel = tui.show_menu(
-            title='Please enter one of the following options:',
-            menu_choices=['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
-        )
+        # navigates to view data sub menu if user chooses 'A'
+        user_sel = _show_view_data_submenu()
 
         if user_sel[0] == 'A':
+
+            # *** TASK 7 ***
+
+            # if while in view data sub menu user chooses 'A' (view reviews by park)
             view_reviews_by_park()
 
-    elif user_selection[0] == 'B':
-        user_sel = tui.show_menu(
-            title='Please enter one of the following options:',
-            menu_choices=['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
-        )
+    # -------------------------------------------------
 
+    elif user_selection[0] == 'B':
+        # navigates to visualize data submenu if user chooses 'B'
+        user_sel = _show_visualize_data_submenu()
+
+
+# region SUB MENUS
+
+def _show_view_data_submenu():
+    user_sel = tui.show_menu(
+        title='Please enter one of the following options:',
+        menu_choices=['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
+    )
+
+    return user_sel
+
+
+def _show_visualize_data_submenu():
+    user_sel = tui.show_menu(
+        title='Please enter one of the following options:',
+        menu_choices=['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
+    )
+
+    return user_sel
+
+# endregion
+
+
+# region SUB MENU FUNCTIONS
 
 def view_reviews_by_park():
 
@@ -118,6 +141,8 @@ def view_reviews_by_park():
             for review in reviews:
                 tui.show_review_text(review[1], review[2], review[3])
             choice = tui.ask_user(f'Try another park? (Y/N)\n')
+
+# endregion
 
 
 run()

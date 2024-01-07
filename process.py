@@ -30,6 +30,8 @@ def read_dataset(file_path):
     tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
 
 
+# region HELPER FUNCTIONS
+
 def get_rows(column, value):
     # returns rows where value of parsed column == parsed value
     rows = []
@@ -40,8 +42,6 @@ def get_rows(column, value):
 
     return rows
 
-
-# region HELPER FUNCTIONS
 
 def _process_row(csv_line):
     # returns {review_id, rating, year_month, review_location, branch} of csv line parsed in

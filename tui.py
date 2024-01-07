@@ -44,6 +44,21 @@ def ask_user(text):
     return input(text)
 
 
+def show_review_text(rating, year_month, reviewer_location):
+    tell_user(f'From {reviewer_location:}')
+    tell_user(f"{'*' * int(rating)} ({rating} stars)")
+    tell_user(f'Reviewed on: {year_month}')
+    line_break()
+
+
+def line_break():
+    tell_user('')
+
+
+def new_line():
+    tell_user('\n')
+
+
 # region HELPER FUNCTIONS
 # these functions abstract away repetitive code to make project cleaner
 def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):

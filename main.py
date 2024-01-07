@@ -81,6 +81,9 @@ def show_sub_menu(user_selection):
             menu_choices=['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
         )
 
+        if user_sel[0] == 'A':
+            view_reviews_by_park()
+
     elif user_selection[0] == 'B':
         user_sel = tui.show_menu(
             title='Please enter one of the following options:',
@@ -92,7 +95,29 @@ def view_reviews_by_park():
 
     # *** TASK 7 ***
 
-    park_name = tui.ask_user('Please enter the park name: \n')
+    choice = 'y'
+    while choice.lower() == 'y':
+        # to get the name of branch or park from user
+        park_name = tui.ask_user('Please enter a park name to view reviews: \n')
+
+        while len(park_name) < 2:
+            # make sure the name is valid
+            park_name = tui.ask_user('Please enter a VALID park name to view reviews: \n')
+
+        # get a list of rows where the branch name matches name user provided
+        reviews = process.get_rows('branch', 'disneyland_' + park_name)
+
+        if len(reviews) < 1:
+            # if there are no reviews for branch uer entered prompt them to try again
+            choice = tui.ask_user(f'No results! Try another park? (Y/N)\n')
+        else:
+            # if reviews exist, display it
+            tui.line_break()
+            tui.tell_user(f'--- {reviews[0][4].replace("_", " ")} Reviews ---')
+            tui.line_break()
+            for review in reviews:
+                tui.show_review_text(review[1], review[2], review[3])
+            choice = tui.ask_user(f'Try another park? (Y/N)\n')
 
 
 run()

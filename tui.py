@@ -59,6 +59,15 @@ def new_line():
     tell_user('\n')
 
 
+def verify_name(initial_prompt, validation_prompt):
+    user_input = ask_user(initial_prompt)
+    while len(user_input) < 2:
+        # make sure user input is valid
+        user_input = ask_user(f'{validation_prompt} \n')
+
+    return user_input
+
+
 # region HELPER FUNCTIONS
 # these functions abstract away repetitive code to make project cleaner
 def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):

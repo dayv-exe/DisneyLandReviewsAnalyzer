@@ -32,11 +32,13 @@ def read_dataset(file_path):
 
 # region HELPER FUNCTIONS
 
-def get_rows(column, value):
+def get_rows(column, value, data_list=None):
     # returns rows where value of parsed column == parsed value
+    if data_list is None:
+        data_list = DATA_LIST
     rows = []
-    for line in DATA_LIST:
-        if _process_row(line)[column].lower() == value.lower():
+    for line in data_list:
+        if _process_row(line)[column.lower()].lower() == value.lower():
             # add to return list if match
             rows.append(line)
 
@@ -45,13 +47,25 @@ def get_rows(column, value):
 
 def _process_row(csv_line):
     # returns {review_id, rating, year_month, review_location, branch} of csv line parsed in
-    return {'review_id': csv_line[0], 'rating': csv_line[1], 'year_month': csv_line[2], 'review_location': csv_line[3], 'branch': csv_line[4]}
+    return {'review_id': csv_line[0], 'rating': csv_line[1], 'year_month': csv_line[2], 'reviewer_location': csv_line[3], 'branch': csv_line[4]}
 
 
 def _add_branch(branch):
     # to add a branch to the list of branches if it hasn't already
-    branch = branch.removeprefix('Disneyland_')
+    branch = clean_branch_name(branch)
     if branch not in LIST_OF_BRANCHES:
         LIST_OF_BRANCHES.append(branch)
+
+
+def clean_branch_name(name):
+    # returns the name of branch without 'Disneyland_'
+    # e.g. paris instead of disneyland_paris
+    return name.removeprefix('Disneyland_')
+
+
+def loaded_branch_name(name, use_underscore=True):
+    # returns the name of branch with 'Disneyland_'
+    # e.g. paris will become Disneyland_Paris
+    return 'Disneyland_' + name.capitalize() if use_underscore else 'Disneyland ' + name.capitalize()
 
 # endregion

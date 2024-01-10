@@ -71,7 +71,7 @@ def show_sub_menu(user_selection):
 
     # *** TASK 6 ***
 
-    user_sel = None
+    # user_sel = None
     if user_selection[0] == 'A':
         # navigates to view data sub menu if user chooses 'A'
         user_sel = show_view_data_submenu()
@@ -106,6 +106,9 @@ def show_sub_menu(user_selection):
 # region SUB MENUS
 
 def show_view_data_submenu():
+
+    # *** VIEW DATA SUB MENU ***
+
     user_sel = tui.show_menu(
         title='Please enter one of the following options:',
         menu_choices=['View Reviews by Park', 'Number of Reviews by park and Reviewer Location', 'Average Score per Year by Park', 'Average Score per Park by Reviewer']
@@ -115,6 +118,9 @@ def show_view_data_submenu():
 
 
 def show_visualize_data_submenu():
+
+    # *** VISUALIZE DATA SUB MENU ***
+
     user_sel = tui.show_menu(
         title='Please enter one of the following options:',
         menu_choices=['Most Reviewed Parks', 'Average Scores', 'Park Ranking by Nationality', 'Most Popular Month by Park']
@@ -126,6 +132,8 @@ def show_visualize_data_submenu():
 
 
 # region SUB MENU FUNCTIONS
+
+# region VEW DATA SUB MENU FUNC
 
 def view_reviews_by_park():
 
@@ -208,6 +216,13 @@ def ave_park_rating_yearly():
         else:
             # if the rating is found
             choice = tui.ask_user(f'The average rating for {process.loaded_branch_name(park_loc, False)} in {year} was {ave_rating} stars. Search again? (Y/N)')
+
+# endregion
+
+
+# region VISUALIZE DATA SUB MENU FUNC
+# endregion
+
 
 # endregion
 

@@ -24,7 +24,7 @@ def read_dataset(file_path):
         next(csv_reader)  # to skip over header
         for line in csv_reader:
             DATA_LIST.append(line)
-            _add_branch(_process_row(line)['branch'])
+            _add_branch(_get_frm_row(line)['branch'])
             row_count += 1
 
     tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
@@ -48,6 +48,39 @@ def num_of_reviews_from_loc(park_loc, reviewer_loc):
         return []
 
 
+def ave_park_rating_yearly(park_loc, year):
+
+    # *** TASK 9 ***
+
+    # to get average score of a park in a given year
+
+    # get rows of park reviews where year and park name == parsed arguments
+
+    # retrieve all reviews for this park
+    reviews = get_rows('branch', loaded_branch_name(park_loc))
+
+    # if reviews exists, get reviews from given year
+    # '-*' to search for all months in the year instead of a specific month in a year
+    if len(reviews) > 0:
+        reviews = get_rows('year_month', str(year) + '-*', reviews)  # get rows where year is year provided
+        rating = []
+        for review in reviews:
+            # add value in rating column only to new array
+            rating.append(int(_get_frm_row(review)['rating']))
+
+        length = len(rating)  # store the length of the array
+        ave = sum(rating)  # get sum of numbers in the array
+        if ave > 0:
+            # then divide by length of the array
+            return ave / length
+
+        # return none of no ratings are found
+        else:
+            return None
+    else:
+        return None
+
+
 # region HELPER FUNCTIONS
 
 def get_rows(column, value, data_list=None):
@@ -56,16 +89,34 @@ def get_rows(column, value, data_list=None):
         data_list = DATA_LIST
     rows = []
     for line in data_list:
-        if _process_row(line)[column.lower()].lower() == value.lower():
-            # add to return list if match
-            rows.append(line)
+        if column.lower() == 'year_month':
+
+            # TO COMPARE YEAR MONTH VALUES
+
+            # add an astrix after year and hyphen to search for all months in that year e.g. 2018-* will return all reviews for 2018 while 2018-3 will return reviews for March 2018
+            year_month = value.split('-')  # splits the year month value to read strings before and after the hyphen
+            if year_month[1] == '*':
+                # if the string after the hyphen is an astrix then get all rows with the same year as provided
+                if _get_frm_row(line)[column.lower()].split('-')[0] == year_month[0]:
+                    rows.append(line)
+            else:
+                # if the char after the hyphen is not an astrix then get only row with the exact year_month that's provided
+                if _get_frm_row(line)[column.lower()] == year_month[0] + '-' + year_month[1]:
+                    rows.append(line)
+        else:
+
+            # TO COMPARE OTHER VALUES EXCEPT YEAR_MONTH
+
+            if _get_frm_row(line)[column.lower()].lower() == value.lower():
+                # add to return list if match
+                rows.append(line)
 
     return rows
 
 
-def _process_row(csv_line):
+def _get_frm_row(row):
     # returns {review_id, rating, year_month, review_location, branch} of csv line parsed in
-    return {'review_id': csv_line[0], 'rating': csv_line[1], 'year_month': csv_line[2], 'reviewer_location': csv_line[3], 'branch': csv_line[4]}
+    return {'review_id': row[0], 'rating': row[1], 'year_month': row[2], 'reviewer_location': row[3], 'branch': row[4]}
 
 
 def _add_branch(branch):

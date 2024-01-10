@@ -89,6 +89,12 @@ def show_sub_menu(user_selection):
 
             # if user chooses 'B' (number of reviews by park and reviewer location)
             num_of_reviews_by_park()
+        elif user_sel[0] == 'C':
+
+            # *** TASK 9 ***
+
+            # if user chooses 'B' (average score per year by park)
+            ave_park_rating_yearly()
 
     # -------------------------------------------------
 
@@ -170,10 +176,38 @@ def num_of_reviews_by_park():
         reviews = process.num_of_reviews_from_loc(park_loc, reviewer_loc)
 
         if len(reviews) < 1:
+            # if no reviews are found
             choice = tui.ask_user('No reviews found. Try again? (Y/N)')
         else:
+            # if reviews are found
             choice = tui.ask_user(f'{process.loaded_branch_name(park_loc, False)} has received {len(reviews)} reviews from visitors from {reviewer_loc.capitalize()}.\nSearch again? (Y/N)\n')
 
+
+def ave_park_rating_yearly():
+
+    # *** TASK 9 ***
+
+    choice = 'y'
+    while choice == 'y':
+        # to get the name of branch or park and year of reviews
+        park_loc = tui.verify_name(
+            initial_prompt='Please enter a branch location:\n',
+            validation_prompt='Please enter a VALID branch location'
+        )
+
+        year = tui.verify_num(
+            validation_prompt='Please choose years from 1900-2024:\n',
+            num_range=[1900, 2024]
+        )
+
+        # gets the average rating
+        ave_rating = process.ave_park_rating_yearly(park_loc, year)
+        if ave_rating is None:
+            # if no ratings are found
+            choice = tui.ask_user('No ratings found. Search again? (Y/N)')
+        else:
+            # if the rating is found
+            choice = tui.ask_user(f'The average rating for {process.loaded_branch_name(park_loc, False)} in {year} was {ave_rating} stars. Search again? (Y/N)')
 
 # endregion
 

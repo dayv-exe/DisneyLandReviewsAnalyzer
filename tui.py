@@ -68,8 +68,28 @@ def verify_name(initial_prompt, validation_prompt):
     return user_input
 
 
+def verify_num(validation_prompt, num_range):
+    user_input = ''
+    valid = False
+
+    while not valid:
+        # prompts user to enter number
+        user_input = ask_user(validation_prompt)
+        try:
+            # if the number is valid and falls within min and max values
+            user_input = int(user_input)
+            if num_range[0] <= user_input <= num_range[1]:
+                valid = True
+        except ValueError:
+            # if user did not enter a number
+            valid = False
+
+    return int(user_input)
+
 # region HELPER FUNCTIONS
 # these functions abstract away repetitive code to make project cleaner
+
+
 def _print_menu_opts(prompt_txt, menu_choices, show_exit_opt=False):
     # prints out prompt to select a menu option then prints out menu options
     # 'show_exit_opt=True' will cause the '[X] Exit' choice to be added to menu being printed

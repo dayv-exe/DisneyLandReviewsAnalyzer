@@ -111,7 +111,14 @@ def show_sub_menu(user_selection):
             # *** TASK 10 ***
 
             # to show chart of num of reviews for each park
-            most_reviewed_parks()
+            show_reviews_pie()
+
+        elif user_sel[0] == 'B':
+
+            # *** TASK 11 ***
+
+            # if user chooses 'B' (average scores)
+            show_ave_reviews_bar()
 
 
 # endregion
@@ -237,12 +244,12 @@ def ave_park_rating_yearly():
 # region VISUALIZE DATA SUB MENU FUNC
 
 
-def most_reviewed_parks():
+def show_reviews_pie():
 
     # *** TASK 10 ***
 
     # to show a pie chart of how many reviews each park has gotten
-    parks_and_reviews = process.get_park_reviews()  # gets reviews for all parks
+    parks_and_reviews = process.get_all_park_reviews()  # gets reviews for all parks
 
     # list of parks and list of reviews
     parks = []
@@ -255,6 +262,26 @@ def most_reviewed_parks():
 
     # show chart
     visual.show_pie_chart(parks, total_reviews)
+
+
+def show_ave_reviews_bar():
+
+    # *** TASK 11 ***
+
+    # to show the average reviews of each park in a bar chart
+    parks_and_ave_reviews = process.get_all_park_ave_reviews()  # gets all ave reviews
+
+    # list of parks and reviews
+    parks = []
+    ave_review = []
+
+    for park in parks_and_ave_reviews:
+        # add each park and review to lists
+        parks.append(park['branch'])
+        ave_review.append(park['ave_reviews'])
+
+    # show bar chart
+    visual.show_bar_chart(parks, ave_review, 'Average Reviews by Park', 'Stars')
 
 
 # endregion

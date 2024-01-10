@@ -82,19 +82,36 @@ def ave_park_rating(park_loc, year=None):
         return None
 
 
-def get_park_reviews():
+def get_all_park_reviews():
 
     # *** TASK 10 ***
 
     # returns a list of dictionaries containing parks and their num of reviews
     parks_and_reviews = []
     for park in LIST_OF_BRANCHES:
+        # loops through ever branch then returns all parks and their total reviews
         parks_and_reviews.append({
             'branch': park,
             'num_of_reviews': len(num_of_reviews(park)),
         })
 
     return parks_and_reviews
+
+
+def get_all_park_ave_reviews():
+
+    # *** TASK 11 ***
+
+    # returns a list of dictionaries containing parks and their ave reviews
+    parks_and_ave_reviews = []
+    for park in LIST_OF_BRANCHES:
+        # loops through ever branch then returns all parks and their total reviews
+        parks_and_ave_reviews.append({
+            'branch': park,
+            'ave_reviews': ave_park_rating(park),
+        })
+
+    return parks_and_ave_reviews
 
 
 # region HELPER FUNCTIONS

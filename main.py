@@ -120,6 +120,13 @@ def show_sub_menu(user_selection):
             # if user chooses 'B' (average scores)
             show_ave_reviews_bar()
 
+        elif user_sel[0] == 'C':
+
+            # *** TASK 12 ***
+
+            # if user chooses 'C' (ranking by nationality)
+            show_top_reviewer_loc_for_park_pie()
+
 
 # endregion
 
@@ -230,7 +237,7 @@ def ave_park_rating_yearly():
         )
 
         # gets the average rating
-        ave_rating = process.ave_park_rating(park_loc, year)
+        ave_rating = process.ave_park_rating(park_loc, 'year', year)
         if ave_rating is None:
             # if no ratings are found
             choice = tui.ask_user('No ratings found. Search again? (Y/N)')
@@ -282,6 +289,39 @@ def show_ave_reviews_bar():
 
     # show bar chart
     visual.show_bar_chart(parks, ave_review, 'Average Reviews by Park', 'Stars')
+
+
+def show_top_reviewer_loc_for_park_pie():
+
+    # *** TASK 12 ***
+
+    # to show a pie chart of the top 10 reviewer_location for selected park
+    choice = 'y'
+    while choice == 'y':
+        # to get the name of branch or park and year of reviews
+        park_loc = tui.verify_name(
+            initial_prompt='Please enter a branch location:\n',
+            validation_prompt='Please enter a VALID branch location'
+        )
+
+        loc_and_ave_ratings = process.get_top_ave_reviews_by_loc_for_park(park_loc)
+
+        if len(loc_and_ave_ratings) < 1:
+            choice = tui.ask_user('No reviews found. Try again? (Y/N)\n')
+        else:
+            top_loc = []
+            top_loc_ratings = []
+
+            loc_and_ave_ratings = process.quick_sort(loc_and_ave_ratings, 'average_rating')
+
+            current_index = len(loc_and_ave_ratings) - 1
+            for i in range(10):
+                top_loc.append(loc_and_ave_ratings[current_index]['reviewer_location'])
+                top_loc_ratings.append(loc_and_ave_ratings[current_index]['average_rating'])
+                current_index -= 1
+
+            visual.show_bar_chart(top_loc, top_loc_ratings, f'Top 10 Nationalities Reviews', 'Average Stars')
+            choice = tui.ask_user('Try another park? (Y/N)\n')
 
 
 # endregion

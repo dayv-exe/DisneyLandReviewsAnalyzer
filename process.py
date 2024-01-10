@@ -50,10 +50,12 @@ def num_of_reviews(park_loc, reviewer_loc=None):
         return []
 
 
-def ave_park_rating(park_loc, year=None):
+def ave_park_rating(park_loc, selected_column='none', column_val=None):
     # to get average score of a park
 
-    # get rows of park reviews where year and park name == parsed arguments
+    # implementation: selected_column='none' will cause func to return ave reviews of selected park, while selected_column='year'  will cause func to return average rating for selected park where year == column_val.
+
+    # get rows of park reviews (if a column is selected, get rows where the column_value parsed == value of current row column)
 
     # retrieve all reviews for this park
     reviews = get_rows('branch', loaded_branch_name(park_loc))
@@ -61,9 +63,14 @@ def ave_park_rating(park_loc, year=None):
     # if reviews exists, get reviews from given year
     # '-*' to search for all months in the year instead of a specific month in a year
     if len(reviews) > 0:
-        if year is not None:
+        if selected_column == 'year':
             # if we only want to get reviews in a certain year, filter out all other years
-            reviews = get_rows('year_month', str(year) + '-*', reviews)  # get rows where year is year provided
+            reviews = get_rows('year_month', str(column_val) + '-*', reviews)  # get rows where year is year provided
+
+        elif selected_column == 'reviewer_location':
+            # if we only want to get reviews in a certain reviewer location, filter out all other review locations
+            reviews = get_rows('reviewer_location', column_val, reviews)  # get rows where review_location is reviewer_location provided
+
         rating = []
         for review in reviews:
             # add value in rating column only to new array
@@ -112,6 +119,25 @@ def get_all_park_ave_reviews():
         })
 
     return parks_and_ave_reviews
+
+
+def get_top_ave_reviews_by_loc_for_park(park_name):
+    park_reviews = num_of_reviews(park_name)  # gets all reviews for selected park
+
+    reviewer_locations = []  # will store all reviewer location for selected park
+    return_list = []  # will store a collection of dict containing all reviewer locations and their respective averages
+
+    for review in park_reviews:
+        # from reviews of selected park, get a list of all the review_locations and add them to list if not already there
+        if _get_frm_row(review)['reviewer_location'] not in reviewer_locations:
+            reviewer_locations.append(_get_frm_row(review)['reviewer_location'])
+
+    for rl in reviewer_locations:
+        # then for every item in the reviewer_locations list, add average rating for each location to return list
+        ave_rating = ave_park_rating(park_name, 'reviewer_location', rl)  # average rating of selected park where reviewer location == rl
+        return_list.append({'reviewer_location': rl, 'average_rating': ave_rating})
+
+    return return_list
 
 
 # region HELPER FUNCTIONS
@@ -170,5 +196,46 @@ def loaded_branch_name(name, use_underscore=True):
     # returns the name of branch with 'Disneyland_'
     # e.g. paris will become Disneyland_Paris
     return 'Disneyland_' + name.capitalize() if use_underscore else 'Disneyland ' + name.capitalize()
+
+
+# region SORTING ALGO
+def quick_sort(array, key=None):
+    # sorting algo entry point
+    return _sort_array(array, 0, len(array) - 1, key)
+
+
+def _sort_array(array, start, end, key=None):
+    # uses QUICK SORT algorithm to sort an array
+    if end > start:
+        pivot = _lomuto_partition(array, start, end, key)
+        _sort_array(array, start, pivot - 1, key)
+        _sort_array(array, pivot + 1, end, key)
+
+    return array
+
+
+def _get_array_index(array_index, the_key):
+    # return item in an array if no key is provided
+    # return value of dictionary if key is provided
+    return array_index if the_key is None else array_index[the_key]
+
+
+def _lomuto_partition(array, start, end, key):
+    # key allows algorithm to look into values in a dictionary which is what places are stored as
+    pivot = array[end]  # selects last item in array as pivot
+    pivot_val = pivot if key is None else pivot[key]  # check if key is provided meaning we are sorting dictionaries, key indicates what key in the dictionary algo should sort by
+
+    i = start - 1
+
+    for j in range(start, end):
+        if _get_array_index(array[j], key) <= pivot_val:
+            # swap and move 1st finger if 2nd finger is less than or equal to pivot
+            i += 1
+            array[i], array[j] = array[j], array[i]
+
+    array[i + 1], array[end] = array[end], array[i + 1]  # set new pivot pos
+    return i + 1
+# endregion
+
 
 # endregion

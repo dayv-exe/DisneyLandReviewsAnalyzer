@@ -30,16 +30,18 @@ def read_dataset(file_path):
     tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
 
 
-def num_of_reviews_from_loc(park_loc, reviewer_loc):
-
-    # *** TASK 8 ***
-
+def num_of_reviews(park_loc, reviewer_loc=None):
     # to get the name of branch or park and reviewer location from user
 
     # fetch list of reviews for parks in given loc then from that list, fetch list of reviews where reviewer loc == given reviewer loc
 
     # retrieve all reviews for this park
     reviews = get_rows('branch', loaded_branch_name(park_loc))
+
+    if reviewer_loc is None:
+        # if we only want to get total num of reviews
+        return reviews
+
     # if reviews exists, get reviews from visitors in a certain location
     if len(reviews) > 0:
         reviews = get_rows('Reviewer_Location', reviewer_loc, reviews)
@@ -48,11 +50,8 @@ def num_of_reviews_from_loc(park_loc, reviewer_loc):
         return []
 
 
-def ave_park_rating_yearly(park_loc, year):
-
-    # *** TASK 9 ***
-
-    # to get average score of a park in a given year
+def ave_park_rating(park_loc, year=None):
+    # to get average score of a park
 
     # get rows of park reviews where year and park name == parsed arguments
 
@@ -62,7 +61,9 @@ def ave_park_rating_yearly(park_loc, year):
     # if reviews exists, get reviews from given year
     # '-*' to search for all months in the year instead of a specific month in a year
     if len(reviews) > 0:
-        reviews = get_rows('year_month', str(year) + '-*', reviews)  # get rows where year is year provided
+        if year is not None:
+            # if we only want to get reviews in a certain year, filter out all other years
+            reviews = get_rows('year_month', str(year) + '-*', reviews)  # get rows where year is year provided
         rating = []
         for review in reviews:
             # add value in rating column only to new array
@@ -79,6 +80,21 @@ def ave_park_rating_yearly(park_loc, year):
             return None
     else:
         return None
+
+
+def get_park_reviews():
+
+    # *** TASK 10 ***
+
+    # returns a list of dictionaries containing parks and their num of reviews
+    parks_and_reviews = []
+    for park in LIST_OF_BRANCHES:
+        parks_and_reviews.append({
+            'branch': park,
+            'num_of_reviews': len(num_of_reviews(park)),
+        })
+
+    return parks_and_reviews
 
 
 # region HELPER FUNCTIONS
@@ -122,6 +138,7 @@ def _get_frm_row(row):
 def _add_branch(branch):
     # to add a branch to the list of branches if it hasn't already
     branch = clean_branch_name(branch)
+
     if branch not in LIST_OF_BRANCHES:
         LIST_OF_BRANCHES.append(branch)
 

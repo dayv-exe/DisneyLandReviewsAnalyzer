@@ -9,6 +9,10 @@ Note:   any user input/output should be done in the module 'tui'
 """
 import process
 import tui
+import visual
+
+
+# region MAIN FUNCTIONS
 
 
 def run():
@@ -102,6 +106,16 @@ def show_sub_menu(user_selection):
         # navigates to visualize data submenu if user chooses 'B'
         user_sel = show_visualize_data_submenu()
 
+        if user_sel[0] == 'A':
+
+            # *** TASK 10 ***
+
+            # to show chart of num of reviews for each park
+            most_reviewed_parks()
+
+
+# endregion
+
 
 # region SUB MENUS
 
@@ -181,7 +195,7 @@ def num_of_reviews_by_park():
             validation_prompt='Please enter a VALID preferred reviewer location: \n'
         )
 
-        reviews = process.num_of_reviews_from_loc(park_loc, reviewer_loc)
+        reviews = process.num_of_reviews(park_loc, reviewer_loc)
 
         if len(reviews) < 1:
             # if no reviews are found
@@ -209,7 +223,7 @@ def ave_park_rating_yearly():
         )
 
         # gets the average rating
-        ave_rating = process.ave_park_rating_yearly(park_loc, year)
+        ave_rating = process.ave_park_rating(park_loc, year)
         if ave_rating is None:
             # if no ratings are found
             choice = tui.ask_user('No ratings found. Search again? (Y/N)')
@@ -221,6 +235,28 @@ def ave_park_rating_yearly():
 
 
 # region VISUALIZE DATA SUB MENU FUNC
+
+
+def most_reviewed_parks():
+
+    # *** TASK 10 ***
+
+    # to show a pie chart of how many reviews each park has gotten
+    parks_and_reviews = process.get_park_reviews()  # gets reviews for all parks
+
+    # list of parks and list of reviews
+    parks = []
+    total_reviews = []
+
+    for park in parks_and_reviews:
+        # adds parks to park list and add reviews to review list
+        parks.append(park['branch'])
+        total_reviews.append(park['num_of_reviews'])
+
+    # show chart
+    visual.show_pie_chart(parks, total_reviews)
+
+
 # endregion
 
 

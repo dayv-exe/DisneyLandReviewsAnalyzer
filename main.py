@@ -167,23 +167,12 @@ def num_of_reviews_by_park():
             validation_prompt='Please enter a VALID preferred reviewer location: \n'
         )
 
-        # fetch list of reviews for parks in given loc then from that list, fetch list of reviews where reviewer loc == given reviewer loc
+        reviews = process.num_of_reviews_from_loc(park_loc, reviewer_loc)
 
-        # retrieve all reviews for this park
-        reviews = process.get_rows('branch', process.loaded_branch_name(park_loc))
-        # if reviews exists, get reviews from visitors in a certain location
-        if len(reviews) > 0:
-
-            reviews = process.get_rows('Reviewer_Location', reviewer_loc, reviews)
-            if len(reviews) > 0:
-                # if reviews from visitors from user parsed location exists
-                c = tui.ask_user(f'{process.loaded_branch_name(park_loc, False)} has {len(reviews)} reviews from visitors from {reviewer_loc.capitalize()}. Try another search? (Y/N)\n')
-            else:
-                c = tui.ask_user('No reviews found. Try another search? (Y/N)\n')
+        if len(reviews) < 1:
+            choice = tui.ask_user('No reviews found. Try again? (Y/N)')
         else:
-            c = tui.ask_user('No such branch exists. Try another search? (Y/N)\n')
-
-        choice = c
+            choice = tui.ask_user(f'{process.loaded_branch_name(park_loc, False)} has received {len(reviews)} reviews from visitors from {reviewer_loc.capitalize()}.\nSearch again? (Y/N)\n')
 
 
 # endregion

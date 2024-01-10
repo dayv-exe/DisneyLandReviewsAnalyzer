@@ -30,6 +30,24 @@ def read_dataset(file_path):
     tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
 
 
+def num_of_reviews_from_loc(park_loc, reviewer_loc):
+
+    # *** TASK 8 ***
+
+    # to get the name of branch or park and reviewer location from user
+
+    # fetch list of reviews for parks in given loc then from that list, fetch list of reviews where reviewer loc == given reviewer loc
+
+    # retrieve all reviews for this park
+    reviews = get_rows('branch', loaded_branch_name(park_loc))
+    # if reviews exists, get reviews from visitors in a certain location
+    if len(reviews) > 0:
+        reviews = get_rows('Reviewer_Location', reviewer_loc, reviews)
+        return reviews
+    else:
+        return []
+
+
 # region HELPER FUNCTIONS
 
 def get_rows(column, value, data_list=None):

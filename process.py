@@ -27,7 +27,7 @@ def read_dataset(file_path):
             _add_branch(_get_frm_row(line)['branch'])
             row_count += 1
 
-    tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
+    tui.tell_user(f'\nSuccessfully read {row_count} rows from dataset!\n')
 
 
 def get_reviews(park_loc, reviewer_loc=None):

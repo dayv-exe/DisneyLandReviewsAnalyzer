@@ -7,9 +7,15 @@ import matplotlib.pyplot as plt
 
 
 def show_pie_chart(labels, sizes):
+
+    def size_lbl(pct):
+        # to show slice percent and size inside slice of pie chart
+        _abs = int(round(pct/100.*sum(sizes)))
+        return f'{_abs}\n({pct: .1f}%)'
+
     # to show a pie chart
     fig, ax = plt.subplots()
-    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.pie(sizes, labels=labels, autopct=lambda pct: size_lbl(pct))
     plt.show()
 
 

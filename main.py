@@ -259,8 +259,8 @@ def ave_score_by_year_by_park():
         )
 
         year = tui.verify_num(
-            validation_prompt='Please choose years from 1900-2024:\n',
-            num_range=[1900, 2024]
+            validation_prompt='Please choose years from 2000-2020:\n',
+            num_range=[2000, 2020]
         )
 
         # gets the average rating
@@ -270,7 +270,7 @@ def ave_score_by_year_by_park():
             choice = tui.ask_user('No ratings found. Search again? (Y/N)')
         else:
             # if the rating is found
-            choice = tui.ask_user(f'The average rating for {process.loaded_branch_name(park_loc, False)} in {year} was {ave_rating} stars. Search again? (Y/N)')
+            choice = tui.ask_user(f'The average rating for {process.loaded_branch_name(park_loc, False)} in {year} was {ave_rating} stars.\nSearch again? (Y/N)\n')
 
 
 def export_data():

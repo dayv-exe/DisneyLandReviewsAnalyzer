@@ -1,5 +1,4 @@
 # *** TASK 15 ***
-import datetime
 import os
 import process
 import tui
@@ -13,7 +12,7 @@ class ExportData:
         self.header = ['Branch', 'Number of Reviews', 'Number of Positive Reviews', 'Average Review Score', 'Total Countries Reviewed']  # header for files
 
     @staticmethod
-    def _aggregate_data(data):
+    def _aggregate_data():
 
         # to compile the needed data to be exported
 
@@ -29,7 +28,7 @@ class ExportData:
 
     def export_as_txt(self):
         # to export as txt
-        output_data = self._aggregate_data(self.data)
+        output_data = self._aggregate_data()
 
         with open(os.path.join(self.export_dir, 'export.txt'), "w") as file:
             file.write(f'{self.header[0]}, {self.header[1]}, {self.header[2]}, {self.header[3]}, {self.header[4]}, \n')
@@ -39,7 +38,7 @@ class ExportData:
 
     def export_as_csv(self):
         # to export as csv
-        output_data = self._aggregate_data(self.data)
+        output_data = self._aggregate_data()
 
         with open(os.path.join(self.export_dir, 'export.csv'), "w") as file:
             file.write(f'{self.header[0]}, {self.header[1]}, {self.header[2]}, {self.header[3]}, {self.header[4]}, \n')
@@ -49,7 +48,7 @@ class ExportData:
 
     def export_as_json(self):
         # to export as json
-        output_data = self._aggregate_data(self.data)
+        output_data = self._aggregate_data()
 
         with open(os.path.join(self.export_dir, 'export.json'), "w") as file:
             file.write('[\n')

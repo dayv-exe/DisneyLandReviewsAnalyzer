@@ -22,7 +22,9 @@ def run():
         header_pattern_char='-'
     )
     process.read_dataset(file_path='./data/disneyland_reviews.csv')
-    show_main_menu()
+
+    while True:
+        show_main_menu()
 
 
 def show_main_menu():

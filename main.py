@@ -298,24 +298,28 @@ def show_top_reviewer_loc_for_park_pie():
     # to show a pie chart of the top 10 reviewer_location for selected park
     choice = 'y'
     while choice == 'y':
+
         # to get the name of branch or park and year of reviews
         park_loc = tui.verify_name(
             initial_prompt='Please enter a branch location:\n',
             validation_prompt='Please enter a VALID branch location'
         )
 
-        loc_and_ave_ratings = process.get_top_ave_reviews_by_loc_for_park(park_loc)
+        loc_and_ave_ratings = process.get_top_ave_reviews_by_loc_for_park(park_loc)  # gets a collection of dictionaries containing reviewer locations and their average reviews
 
         if len(loc_and_ave_ratings) < 1:
+            # if no reviews are found
             choice = tui.ask_user('No reviews found. Try again? (Y/N)\n')
         else:
             top_loc = []
             top_loc_ratings = []
 
+            # sort reviews that are found
             loc_and_ave_ratings = process.quick_sort(loc_and_ave_ratings, 'average_rating')
 
-            current_index = len(loc_and_ave_ratings) - 1
+            current_index = len(loc_and_ave_ratings) - 1  # to start plotting bar chart from the highest review
             for i in range(10):
+                # plots the top 10 highest reviews
                 top_loc.append(loc_and_ave_ratings[current_index]['reviewer_location'])
                 top_loc_ratings.append(loc_and_ave_ratings[current_index]['average_rating'])
                 current_index -= 1

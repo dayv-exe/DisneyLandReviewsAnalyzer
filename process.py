@@ -30,7 +30,7 @@ def read_dataset(file_path):
     tui.tell_user(f'\nSuccessfully read {row_count} lines from dataset!\n')
 
 
-def num_of_reviews(park_loc, reviewer_loc=None):
+def get_reviews(park_loc, reviewer_loc=None):
     # to get the name of branch or park and reviewer location from user
 
     # fetch list of reviews for parks in given loc then from that list, fetch list of reviews where reviewer loc == given reviewer loc
@@ -50,7 +50,19 @@ def num_of_reviews(park_loc, reviewer_loc=None):
         return []
 
 
-def ave_park_rating(park_loc, selected_column='none', column_val=None):
+def get_pos_reviews(park_loc, reviewer_loc=None):
+    # returns a list of positive reviews i.e. reviews 4 stars and above (3 stars in neutral, 2 or less is negative)
+    reviews = get_reviews(park_loc, reviewer_loc)
+    pos_reviews = []
+
+    for review in reviews:
+        if int(_get_frm_row(review)['rating']) >= 4:
+            pos_reviews.append(review)
+
+    return pos_reviews
+
+
+def get_ave_rating(park_loc, selected_column='none', column_val=None):
     # to get average score of a park
 
     # implementation: selected_column='none' will cause func to return ave reviews of selected park, while selected_column='year'  will cause func to return average rating for selected park where year == column_val.
@@ -95,7 +107,7 @@ def ave_park_rating(park_loc, selected_column='none', column_val=None):
         return None
 
 
-def get_all_park_reviews():
+def get_all_reviews():
 
     # *** TASK 10 ***
 
@@ -105,13 +117,13 @@ def get_all_park_reviews():
         # loops through ever branch then returns all parks and their total reviews
         parks_and_reviews.append({
             'branch': park,
-            'num_of_reviews': len(num_of_reviews(park)),
+            'num_of_reviews': len(get_reviews(park)),
         })
 
     return parks_and_reviews
 
 
-def get_all_park_ave_reviews():
+def get_all_ave_reviews():
 
     # *** TASK 11 ***
 
@@ -121,14 +133,14 @@ def get_all_park_ave_reviews():
         # loops through ever branch then returns all parks and their total reviews
         parks_and_ave_reviews.append({
             'branch': park,
-            'ave_reviews': ave_park_rating(park),
+            'ave_reviews': get_ave_rating(park),
         })
 
     return parks_and_ave_reviews
 
 
-def get_ave_reviews_by_loc_for_park(park_name):
-    park_reviews = num_of_reviews(park_name)  # gets all reviews for selected park
+def get_ave_reviews_by_loc(park_name):
+    park_reviews = get_reviews(park_name)  # gets all reviews for selected park
 
     reviewer_locations = []  # will store all reviewer location for selected park
     return_list = []  # will store a collection of dict containing all reviewer locations and their respective averages
@@ -140,13 +152,13 @@ def get_ave_reviews_by_loc_for_park(park_name):
 
     for rl in reviewer_locations:
         # then for every item in the reviewer_locations list, add average rating for each location to return list
-        ave_rating = ave_park_rating(park_name, 'reviewer_location', rl)  # average rating of selected park where reviewer location == rl
+        ave_rating = get_ave_rating(park_name, 'reviewer_location', rl)  # average rating of selected park where reviewer location == rl
         return_list.append({'reviewer_location': rl, 'average_rating': ave_rating})
 
     return return_list
 
 
-def get_ave_month_rating_for_park(park_name):
+def get_ave_month_rating(park_name):
 
     # *** TASK 13 ***
 
@@ -157,7 +169,7 @@ def get_ave_month_rating_for_park(park_name):
     for i in range(12):
         # loops 12 times to get reviews for all 12 months
         ave_monthly_rating.append(
-            ave_park_rating(park_name, 'month', i + 1)
+            get_ave_rating(park_name, 'month', i + 1)
         )
 
     return ave_monthly_rating  # returns the average ratings for all 12 months

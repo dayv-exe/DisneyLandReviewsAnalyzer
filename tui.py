@@ -45,6 +45,7 @@ def ask_user(text):
 
 
 def show_review_text(rating, year_month, reviewer_location):
+    # to print reviews in a uniformed manner
     tell_user(f'From {reviewer_location:}')
     tell_user(f"{'*' * int(rating)} ({rating} stars)")
     tell_user(f'Reviewed on: {year_month}')
@@ -60,6 +61,7 @@ def new_line():
 
 
 def verify_name(initial_prompt, validation_prompt):
+    # to ensure that any name user enters is a valid length and type
     user_input = ask_user(initial_prompt)
     while len(user_input) < 2:
         # make sure user input is valid
@@ -69,6 +71,7 @@ def verify_name(initial_prompt, validation_prompt):
 
 
 def verify_num(validation_prompt, num_range):
+    # to ensure that any number user enters is a valid quantity and type
     user_input = ''
     valid = False
 

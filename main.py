@@ -10,6 +10,7 @@ Note:   any user input/output should be done in the module 'tui'
 import process
 import tui
 import visual
+from data.export_data import ExportData
 
 
 # region MAIN FUNCTIONS
@@ -25,13 +26,16 @@ def run():
 
 
 def show_main_menu():
+
+    main_menu_choices = ['View Data', 'Visualize Data', 'Export Data']
+
     user_sel = tui.show_menu(
 
         # *** TASK 3 ***
 
         # allow user to select choice
         title='Please enter the letter which corresponds with your desired menu choice:',
-        menu_choices=['View Data', 'Visualize Data'],
+        menu_choices=main_menu_choices,
         show_choice_confirmation=True,
         show_exit_opt=True
     )
@@ -42,7 +46,7 @@ def show_main_menu():
 
         # allows user to confirm choice
         title='Confirm selection:',
-        menu_choices=['View Data', 'Visualize Data'],
+        menu_choices=main_menu_choices,
         show_choice_confirmation=False,
         show_exit_opt=True
     )
@@ -92,20 +96,20 @@ def show_sub_menu(user_selection):
             # *** TASK 8 ***
 
             # if user chooses 'B' (number of reviews by park and reviewer location)
-            num_of_reviews_by_park()
+            num_of_reviews_by_park_and_reviewer_loc()
         elif user_sel[0] == 'C':
 
             # *** TASK 9 ***
 
             # if user chooses 'B' (average score per year by park)
-            ave_park_rating_yearly()
+            ave_score_by_year_by_park()
 
         elif user_sel[0] == 'D':
 
             # *** TASK 13 ***
 
             # if user chooses 'D' (average score per park by reviewer location)
-            task_14()
+            ave_score_per_park_by_reviewer_loc()
 
     # -------------------------------------------------
 
@@ -118,29 +122,38 @@ def show_sub_menu(user_selection):
             # *** TASK 10 ***
 
             # to show chart of num of reviews for each park
-            show_reviews_pie()
+            most_reviewed_parks_chart()
 
         elif user_sel[0] == 'B':
 
             # *** TASK 11 ***
 
             # if user chooses 'B' (average scores)
-            show_ave_reviews_bar()
+            ave_scores_chart()
 
         elif user_sel[0] == 'C':
 
             # *** TASK 12 ***
 
             # if user chooses 'C' (ranking by nationality)
-            show_top_reviewer_loc_for_park_pie()
+            park_ranking_by_nationality_chart()
 
         elif user_sel[0] == 'D':
 
             # *** TASK 13 ***
 
             # if user chooses 'D' (most popular month by park)
-            task_13()
+            most_pop_month_by_park_chart()
 
+    # -------------------------------------------------
+
+    elif user_selection[0] == 'C':
+
+        # *** TASK 15 ***
+
+        # IF USER WANTS TO EXPORT DATA
+
+        export_data()
 
 # endregion
 
@@ -205,7 +218,7 @@ def view_reviews_by_park():
             choice = tui.ask_user(f'Try another park? (Y/N)\n')
 
 
-def num_of_reviews_by_park():
+def num_of_reviews_by_park_and_reviewer_loc():
 
     # *** TASK 8 ***
 
@@ -223,7 +236,7 @@ def num_of_reviews_by_park():
             validation_prompt='Please enter a VALID preferred reviewer location: \n'
         )
 
-        reviews = process.num_of_reviews(park_loc, reviewer_loc)
+        reviews = process.get_reviews(park_loc, reviewer_loc)
 
         if len(reviews) < 1:
             # if no reviews are found
@@ -233,7 +246,7 @@ def num_of_reviews_by_park():
             choice = tui.ask_user(f'{process.loaded_branch_name(park_loc, False)} has received {len(reviews)} reviews from visitors from {reviewer_loc.capitalize()}.\nSearch again? (Y/N)\n')
 
 
-def ave_park_rating_yearly():
+def ave_score_by_year_by_park():
 
     # *** TASK 9 ***
 
@@ -251,7 +264,7 @@ def ave_park_rating_yearly():
         )
 
         # gets the average rating
-        ave_rating = process.ave_park_rating(park_loc, 'year', year)
+        ave_rating = process.get_ave_rating(park_loc, 'year', year)
         if ave_rating is None:
             # if no ratings are found
             choice = tui.ask_user('No ratings found. Search again? (Y/N)')
@@ -259,18 +272,39 @@ def ave_park_rating_yearly():
             # if the rating is found
             choice = tui.ask_user(f'The average rating for {process.loaded_branch_name(park_loc, False)} in {year} was {ave_rating} stars. Search again? (Y/N)')
 
+
+def export_data():
+
+    # *** TASK 15 ***
+
+    choice = tui.show_menu(
+        title='\nPlease select export format:',
+        menu_choices=['JSON', 'CSV', 'TXT']
+    )
+
+    tui.tell_user(f'You have selected the {choice[1]} format.\nPlease wait while file is exporting...')
+    export_file = ExportData(process.DATA_LIST, './data')
+
+    if choice[0] == 'A':
+        export_file.export_as_json()
+    elif choice[0] == 'B':
+        export_file.export_as_csv()
+    elif choice[0] == 'C':
+        export_file.export_as_txt()
+
+
 # endregion
 
 
 # region VISUALIZE DATA SUB MENU FUNC
 
 
-def show_reviews_pie():
+def most_reviewed_parks_chart():
 
     # *** TASK 10 ***
 
     # to show a pie chart of how many reviews each park has gotten
-    parks_and_reviews = process.get_all_park_reviews()  # gets reviews for all parks
+    parks_and_reviews = process.get_all_reviews()  # gets reviews for all parks
 
     # list of parks and list of reviews
     parks = []
@@ -285,12 +319,12 @@ def show_reviews_pie():
     visual.show_pie_chart(parks, total_reviews)
 
 
-def show_ave_reviews_bar():
+def ave_scores_chart():
 
     # *** TASK 11 ***
 
     # to show the average reviews of each park in a bar chart
-    parks_and_ave_reviews = process.get_all_park_ave_reviews()  # gets all ave reviews
+    parks_and_ave_reviews = process.get_all_ave_reviews()  # gets all ave reviews
 
     # list of parks and reviews
     parks = []
@@ -305,7 +339,7 @@ def show_ave_reviews_bar():
     visual.show_bar_chart(parks, ave_review, 'Average Reviews by Park', 'Stars')
 
 
-def show_top_reviewer_loc_for_park_pie():
+def park_ranking_by_nationality_chart():
 
     # *** TASK 12 ***
 
@@ -320,7 +354,7 @@ def show_top_reviewer_loc_for_park_pie():
         )
 
         tui.tell_user('Please wait program is processing data and not stuck in a loop!')
-        loc_and_ave_ratings = process.get_ave_reviews_by_loc_for_park(park_loc)  # gets a collection of dictionaries containing reviewer locations and their average reviews
+        loc_and_ave_ratings = process.get_ave_reviews_by_loc(park_loc)  # gets a collection of dictionaries containing reviewer locations and their average reviews
 
         if len(loc_and_ave_ratings) < 1:
             # if no reviews are found
@@ -343,7 +377,7 @@ def show_top_reviewer_loc_for_park_pie():
             choice = tui.ask_user('Try another park? (Y/N)\n')
 
 
-def task_13():
+def most_pop_month_by_park_chart():
 
     # *** TASK 13 ***
 
@@ -359,7 +393,7 @@ def task_13():
             validation_prompt='Please enter a VALID branch location'
         )
 
-        ratings = process.get_ave_month_rating_for_park(park_loc)  # gets average ratings for all months
+        ratings = process.get_ave_month_rating(park_loc)  # gets average ratings for all months
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         if len(ratings) > 0:
             # show bar chart
@@ -370,7 +404,7 @@ def task_13():
             choice = tui.ask_user('No ratings found. Try another park? (Y/N)\n')
 
 
-def task_14():
+def ave_score_per_park_by_reviewer_loc():
 
     # *** TASK 14 ***
 
@@ -382,7 +416,7 @@ def task_14():
     tui.tell_user('Please wait program is processing data and not stuck in a loop!')
     for park in parks:
         # get the average rating and reviewer location for current park
-        current_rating_and_loc = process.get_ave_reviews_by_loc_for_park(park)
+        current_rating_and_loc = process.get_ave_reviews_by_loc(park)
         average_ratings_and_locations.append(current_rating_and_loc)
 
         # if reviews exist, display it

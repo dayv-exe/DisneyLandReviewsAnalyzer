@@ -127,7 +127,7 @@ def get_all_park_ave_reviews():
     return parks_and_ave_reviews
 
 
-def get_top_ave_reviews_by_loc_for_park(park_name):
+def get_ave_reviews_by_loc_for_park(park_name):
     park_reviews = num_of_reviews(park_name)  # gets all reviews for selected park
 
     reviewer_locations = []  # will store all reviewer location for selected park

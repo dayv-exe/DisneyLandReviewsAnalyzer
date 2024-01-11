@@ -100,6 +100,13 @@ def show_sub_menu(user_selection):
             # if user chooses 'B' (average score per year by park)
             ave_park_rating_yearly()
 
+        elif user_sel[0] == 'D':
+
+            # *** TASK 13 ***
+
+            # if user chooses 'D' (average score per park by reviewer location)
+            task_14()
+
     # -------------------------------------------------
 
     elif user_selection[0] == 'B':
@@ -312,7 +319,8 @@ def show_top_reviewer_loc_for_park_pie():
             validation_prompt='Please enter a VALID branch location'
         )
 
-        loc_and_ave_ratings = process.get_top_ave_reviews_by_loc_for_park(park_loc)  # gets a collection of dictionaries containing reviewer locations and their average reviews
+        tui.tell_user('Please wait program is processing data and not stuck in a loop!')
+        loc_and_ave_ratings = process.get_ave_reviews_by_loc_for_park(park_loc)  # gets a collection of dictionaries containing reviewer locations and their average reviews
 
         if len(loc_and_ave_ratings) < 1:
             # if no reviews are found
@@ -360,6 +368,31 @@ def task_13():
         else:
             # if no results were found
             choice = tui.ask_user('No ratings found. Try another park? (Y/N)\n')
+
+
+def task_14():
+
+    # *** TASK 14 ***
+
+    # to get average rating for every park from every reviewer location
+
+    parks = process.LIST_OF_BRANCHES
+    average_ratings_and_locations = []
+
+    tui.tell_user('Please wait program is processing data and not stuck in a loop!')
+    for park in parks:
+        # get the average rating and reviewer location for current park
+        current_rating_and_loc = process.get_ave_reviews_by_loc_for_park(park)
+        average_ratings_and_locations.append(current_rating_and_loc)
+
+        # if reviews exist, display it
+        tui.line_break()
+        tui.tell_user(f'--- {process.loaded_branch_name(park, False)} Reviews ---')  # shows the name of current park
+        tui.line_break()
+
+        for rl in current_rating_and_loc:
+            # displays each of the rating and review location for all reviewer locations gotten for current park
+            tui.tell_user(f'-Reviewer location: {rl["reviewer_location"].capitalize()}, Average rating: {rl["average_rating"]} stars')
 
 
 # endregion

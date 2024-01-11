@@ -7,6 +7,8 @@ Note:   any user input/output should be done in the module 'tui'
         any processing should be done in the module 'process'
         any visualisation should be done in the module 'visual'
 """
+import os.path
+
 import process
 import tui
 import visual
@@ -285,7 +287,7 @@ def export_data():
     )
 
     tui.tell_user(f'You have selected the {choice[1]} format.\nPlease wait while file is exporting...')
-    export_file = ExportData(process.DATA_LIST, './data')
+    export_file = ExportData(process.DATA_LIST, os.path.curdir + '/data')
 
     if choice[0] == 'A':
         export_file.export_as_json()

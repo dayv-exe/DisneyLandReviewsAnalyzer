@@ -61,7 +61,7 @@ def ave_park_rating(park_loc, selected_column='none', column_val=None):
     reviews = get_rows('branch', loaded_branch_name(park_loc))
 
     # if reviews exists, get reviews from given year
-    # '-*' to search for all months in the year instead of a specific month in a year
+    # 'year-*' to search for the year instead of a specific month in a year e.g. 2014-* will return average of all reviews in 2014
     if len(reviews) > 0:
         if selected_column == 'year':
             # if we only want to get reviews in a certain year, filter out all other years
@@ -71,16 +71,22 @@ def ave_park_rating(park_loc, selected_column='none', column_val=None):
             # if we only want to get reviews in a certain reviewer location, filter out all other review locations
             reviews = get_rows('reviewer_location', column_val, reviews)  # get rows where review_location is reviewer_location provided
 
+        elif selected_column == 'month':
+            # '*-month' to search for the months in all years e.g. *-3 will return average for all reviews in March of all years
+
+            # if we only want to get reviews in a certain month and filter out all other reviews not from that month
+            reviews = get_rows('year_month', '*-' + str(column_val), reviews)  # get rows where month is month parsed
+
         rating = []
         for review in reviews:
             # add value in rating column only to new array
             rating.append(int(_get_frm_row(review)['rating']))
 
         length = len(rating)  # store the length of the array
-        ave = sum(rating)  # get sum of numbers in the array
-        if ave > 0:
+        rating_sum = sum(rating)  # get sum of numbers in the array
+        if rating_sum > 0:
             # then divide by length of the array
-            return ave / length
+            return rating_sum / length
 
         # return none of no ratings are found
         else:
@@ -140,6 +146,23 @@ def get_top_ave_reviews_by_loc_for_park(park_name):
     return return_list
 
 
+def get_ave_month_rating_for_park(park_name):
+
+    # *** TASK 13 ***
+
+    # will return a list containing the average rating selected park received in every month
+
+    ave_monthly_rating = []  # list that will contain the ave rating for each month, with index 0 representing january and so on
+
+    for i in range(12):
+        # loops 12 times to get reviews for all 12 months
+        ave_monthly_rating.append(
+            ave_park_rating(park_name, 'month', i + 1)
+        )
+
+    return ave_monthly_rating  # returns the average ratings for all 12 months
+
+
 # region HELPER FUNCTIONS
 
 def get_rows(column, value, data_list=None):
@@ -148,7 +171,7 @@ def get_rows(column, value, data_list=None):
         data_list = DATA_LIST
     rows = []
     for line in data_list:
-        if column.lower() == 'year_month':
+        if column.lower() == 'year_month' and not _get_frm_row(line)[column.lower()] == 'missing':
 
             # TO COMPARE YEAR MONTH VALUES
 
@@ -157,6 +180,10 @@ def get_rows(column, value, data_list=None):
             if year_month[1] == '*':
                 # if the string after the hyphen is an astrix then get all rows with the same year as provided
                 if _get_frm_row(line)[column.lower()].split('-')[0] == year_month[0]:
+                    rows.append(line)
+            elif year_month[0] == '*':
+                # if the string before the hyphen is an astrix then get all rows with the same month as provided
+                if _get_frm_row(line)[column.lower()].split('-')[1] == year_month[1]:
                     rows.append(line)
             else:
                 # if the char after the hyphen is not an astrix then get only row with the exact year_month that's provided

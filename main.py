@@ -127,6 +127,13 @@ def show_sub_menu(user_selection):
             # if user chooses 'C' (ranking by nationality)
             show_top_reviewer_loc_for_park_pie()
 
+        elif user_sel[0] == 'D':
+
+            # *** TASK 13 ***
+
+            # if user chooses 'D' (most popular month by park)
+            task_13()
+
 
 # endregion
 
@@ -326,6 +333,33 @@ def show_top_reviewer_loc_for_park_pie():
 
             visual.show_bar_chart(top_loc, top_loc_ratings, f'Top 10 Nationalities Reviews', 'Average Stars')
             choice = tui.ask_user('Try another park? (Y/N)\n')
+
+
+def task_13():
+
+    # *** TASK 13 ***
+
+    # to show the average review selected park has gotten for every month
+
+    # get all reviews for selected park
+    choice = 'y'
+    while choice == 'y':
+
+        # to get the name of branch or park and year of reviews
+        park_loc = tui.verify_name(
+            initial_prompt='Please enter a branch location:\n',
+            validation_prompt='Please enter a VALID branch location'
+        )
+
+        ratings = process.get_ave_month_rating_for_park(park_loc)  # gets average ratings for all months
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        if len(ratings) > 0:
+            # show bar chart
+            visual.show_bar_chart(months, ratings, f'Most popular months for {park_loc.capitalize()}.', 'Stars')
+            choice = tui.ask_user('Try another park? (Y/N)\n')
+        else:
+            # if no results were found
+            choice = tui.ask_user('No ratings found. Try another park? (Y/N)\n')
 
 
 # endregion
